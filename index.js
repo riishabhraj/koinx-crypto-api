@@ -67,6 +67,32 @@ cron.schedule("0 */2 * * *", () => {
   fetchData().catch(console.error);
 });
 
+app.get("/", async (req, res) => {
+  try {
+    const bitcoinData = await Crypto.findOne({ symbol: 'bitcoin' }).sort({ date: -1 });
+    const ethereumData = await Crypto.findOne({ symbol: 'ethereum' }).sort({ date: -1 });
+    const maticData = await Crypto.findOne({ symbol: 'matic-network' }).sort({ date: -1 });
+
+    const response = {
+      success: true,
+      data: {
+        bitcoin: bitcoinData,
+        ethereum: ethereumData,
+        matic: maticData
+      },
+      lastUpdated: bitcoinData ? bitcoinData.date : new Date()
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error("Error fetching all coins:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error fetching cryptocurrency data"
+    });
+  }
+});
+
 app.use("/stats", statsRoute);
 app.use("/deviation", deviationRoute);
 
