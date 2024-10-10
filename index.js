@@ -1,8 +1,8 @@
 const express = require("express");
 const axios = require("axios");
 const cron = require("node-cron");
-const mongoose = require("./config/db");
-const Crypto = require("./models/crypto");
+const mongoose = require("./config/db.js");
+const Crypto = require("./models/crypto.js");
 const statsRoute = require("./routes/stats.js");
 const deviationRoute = require("./routes/deviation.js");
 
